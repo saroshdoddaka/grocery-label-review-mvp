@@ -3,10 +3,8 @@ from uuid import uuid4
 import streamlit as st
 from src.storage.images import save_upload
 from src.storage.database import save_observation
-from src.ocr.paddle_engine import run_ocr
-from src.barcode.decoder import decode_image
 from src.extraction.dates import date_components
-from src.processing import build_draft
+from src.processing import analyze_images_deferred, build_draft
 
 st.header("New observation")
 uploads = st.file_uploader("Product photos (1 required, up to 2 additional)", type=["jpg","jpeg","png","webp"], accept_multiple_files=True)
@@ -15,9 +13,11 @@ if uploads and len(uploads) <= 3 and st.button("Analyze images", type="primary")
     images=[]; warnings=[]
     for order, upload in enumerate(uploads, 1):
         try:
-            image=save_upload(upload, order); image["ocr"]=run_ocr(image["path"], order); image["barcodes"], barcode_warnings=decode_image(image["path"], order); warnings += barcode_warnings + image["ocr"].get("warnings", []); images.append(image)
+            images.append(save_upload(upload, order))
         except ValueError as exc: warnings.append(str(exc))
-    st.session_state["draft"] = build_draft(images, warnings)
+    analyzed = analyze_images_deferred(images)
+    warnings += [warning for image in analyzed for warning in image.get("warnings", [])]
+    st.session_state["draft"] = build_draft(analyzed, warnings)
 
 draft=st.session_state.get("draft")
 if draft:
