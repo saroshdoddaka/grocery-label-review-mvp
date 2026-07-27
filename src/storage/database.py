@@ -35,7 +35,10 @@ def create_import_batch(import_id: str, source_name: str, total_images: int, con
 
 def upsert_import_image(import_id: str, image: dict, fast_status=None, fast_json=None, fast_elapsed_ms=None, deferred_status=None, deferred_json=None, deferred_elapsed_ms=None):
     with conn() as db:
-        db.execute("INSERT OR REPLACE INTO import_images VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (import_id, image["order"], image["content_hash"], image["path"], image["original_name"], image["size"], image.get("width"), image.get("height"), fast_status, json.dumps(fast_json, default=str) if fast_json is not None else None, fast_elapsed_ms, deferred_status, json.dumps(deferred_json, default=str) if deferred_json is not None else None, deferred_elapsed_ms))
+        db.execute("""INSERT OR REPLACE INTO import_images
+            (import_id, image_order, content_hash, path, original_name, size, width, height,
+             fast_status, fast_json, fast_elapsed_ms, deferred_status, deferred_json, deferred_elapsed_ms)
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (import_id, image["order"], image["content_hash"], image["path"], image["original_name"], image["size"], image.get("width"), image.get("height"), fast_status, json.dumps(fast_json, default=str) if fast_json is not None else None, fast_elapsed_ms, deferred_status, json.dumps(deferred_json, default=str) if deferred_json is not None else None, deferred_elapsed_ms))
 
 def update_import_batch(import_id: str, status: str, **timings):
     fields = ["status=?", "updated_at=?"]; values = [status, utc_now()]
