@@ -1,8 +1,7 @@
 import json
 import streamlit as st
 from PIL import Image
-
-MAX_INFERENCE_SIDE = 1800
+from src.config import OCR_MAX_INFERENCE_SIDE
 
 @st.cache_resource(show_spinner=False)
 def _engine():
@@ -12,13 +11,13 @@ def _engine():
         use_doc_orientation_classify=False,
         use_doc_unwarping=False,
         use_textline_orientation=True,
-        text_det_limit_side_len=MAX_INFERENCE_SIDE,
+        text_det_limit_side_len=OCR_MAX_INFERENCE_SIDE,
     )
 
 def _inference_image(path: str):
     image = Image.open(path).convert("RGB")
     original_width, original_height = image.size
-    scale = min(1.0, MAX_INFERENCE_SIDE / max(original_width, original_height))
+    scale = min(1.0, OCR_MAX_INFERENCE_SIDE / max(original_width, original_height))
     if scale < 1.0:
         image = image.resize((round(original_width * scale), round(original_height * scale)), Image.Resampling.LANCZOS)
     return image, original_width, original_height
