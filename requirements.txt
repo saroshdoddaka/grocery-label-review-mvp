@@ -1,0 +1,9 @@
+streamlit>=1.35
+Pillow>=10.0
+requests>=2.31
+pytest>=8.0
+# Optional local OCR / barcode support:
+# paddleocr>=2.7
+# paddlepaddle>=2.6
+# pyzbar>=0.1.9 (also requires the system zbar shared library)
+# zxing-cpp>=3.1 (portable fallback barcode decoder)
