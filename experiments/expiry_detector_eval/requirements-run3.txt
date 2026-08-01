@@ -1,0 +1,7 @@
+# Install CUDA-enabled PyTorch first using https://pytorch.org/get-started/locally/.
+# This file deliberately does not name torch, PaddleOCR, Tesseract, or masking dependencies.
+ultralytics>=8.2
+huggingface_hub>=0.23
+Pillow>=10.0
+# Optional HEIC/HEIF input support:
+# pillow-heif>=0.16

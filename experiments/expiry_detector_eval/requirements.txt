@@ -1,0 +1,13 @@
+# Install these in the experiment's virtual environment (not the production app environment).
+# Historical Run 2/2.1 timestamp-suppression dependencies. Run 3 uses
+# requirements-run3.txt after PyTorch has been installed separately.
+ultralytics>=8.2
+huggingface_hub>=0.23
+Pillow>=10.0
+pytesseract>=0.3.13
+opencv-python>=4.8
+# Preferred Run 2.1 overlay OCR backend. Install only if a compatible Paddle runtime is available:
+# paddleocr>=2.7
+# paddlepaddle
+# Optional HEIC/HEIF input support:
+# pillow-heif>=0.16

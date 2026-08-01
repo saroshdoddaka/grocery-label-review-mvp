@@ -7,4 +7,14 @@ uploads/*
 !uploads/.gitkeep
 .env
 .DS_Store
+._*
 *.pyc
+
+# Isolated expiration-detector experiment artifacts
+*.pt
+experiments/expiry_detector_eval/.venv/
+experiments/expiry_detector_eval/outputs/
+experiments/expiry_detector_eval/test_images/
+experiments/expiry_detector_eval/input_images/
+experiments/expiry_detector_eval/**/crops/
+experiments/expiry_detector_eval/**/annotated/
